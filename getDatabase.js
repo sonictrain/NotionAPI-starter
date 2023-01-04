@@ -13,8 +13,16 @@ const databaseId = process.env.DATABASE_ID;
 // getDatabase async function
 const getDatabase = async () => {
     const response = await notion.databases.query({ database_id: databaseId });
-  
-    console.log(response);
+
+    // and map the result if necessary as follow
+    const results = response.results.map((page) => {
+        return {
+            id: page.id,
+            name: page.properties.Name.title[0]?.plain_text
+        }
+    })
+
+    console.log(results);
 };
   
 getDatabase();
