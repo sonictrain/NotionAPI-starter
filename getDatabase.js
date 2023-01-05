@@ -10,19 +10,10 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 // use our DATABASE_ID from .env
 const databaseId = process.env.DATABASE_ID;
 
-// getDatabase async function
-const getDatabase = async () => {
-    const response = await notion.databases.query({ database_id: databaseId });
+// async function which takes a database ID as an input and return all the entries
+async function getDatabase(id) {
+    const response = await notion.databases.retrieve({ database_id: id })
+    console.log(response);
+}
 
-    // and map the result if necessary as follow
-    const results = response.results.map((page) => {
-        return {
-            id: page.id,
-            name: page.properties.Name.title[0]?.plain_text
-        }
-    })
-
-    console.log(results);
-};
-  
-getDatabase();
+getDatabase(databaseId);
